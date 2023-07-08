@@ -1,0 +1,9 @@
+{
+    "name": "mykhailo/light-hp",
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+    "require": {}
+}
