@@ -104,4 +104,15 @@ abstract class Model
     {
         return $this->errors[$attribute][0];
     }
+
+    public function labels(): array
+    {
+        return [
+            'firstName' => 'First name',
+            'lastName' => 'Last name',
+            'email' => 'Email',
+            'password' => 'Password',
+            'passwordRepeat' => 'Repeat password',
+        ];
+    }
 }
