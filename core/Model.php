@@ -49,6 +49,7 @@ abstract class Model
                     $this->addError($attribute, self::RULE_MAX, $rule);
                 }
                 if ($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']}) {
+                    $rule['match'] = $this->getLabel($rule['match']);
                     $this->addError($attribute, self::RULE_MATCH, $rule);
                 }
                 if ($ruleName === self::RULE_UNIQUE) {
@@ -61,7 +62,7 @@ abstract class Model
                     $record = $statement->fetch();
 
                     if ($record) {
-                        $this->addError($attribute, self::RULE_UNIQUE, ['field' => $attribute]);
+                        $this->addError($attribute, self::RULE_UNIQUE, ['field' => $this->getLabel($attribute)]);
                     }
                 }
             }
@@ -89,8 +90,8 @@ abstract class Model
             self::RULE_EMAIL => 'Enter valid email address',
             self::RULE_MIN => 'Minimal length of this field is {min}',
             self::RULE_MAX => 'Maximal length of this field is {max}',
-            self::RULE_MATCH => 'This field must match {field}',
-            self::RULE_UNIQUE => 'Record with thies {field} already exist',
+            self::RULE_MATCH => 'This field must match {match} field',
+            self::RULE_UNIQUE => 'Record with this {field} already exist',
         ];
 
     }
@@ -114,5 +115,10 @@ abstract class Model
             'password' => 'Password',
             'passwordRepeat' => 'Repeat password',
         ];
+    }
+
+    public function getLabel(string $attribute): string
+    {
+        return $this->labels()[$attribute] ?? $attribute;
     }
 }
