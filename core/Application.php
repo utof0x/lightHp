@@ -8,12 +8,13 @@ class Application
     public Router $router;
     public Response $response;
     public Request $request;
-    public Controller $controller;
+    public ?Controller $controller = null;
     public static Application $app;
     public Database $db;
     public Session $session;
     public ?DbModel $user;
     public string $userClass;
+    public string $layout = 'main';
 
     public function __construct(string $rootPath, array $config)
     {
@@ -42,7 +43,12 @@ class Application
 
     public function run(): void
     {
-        echo $this->router->resolve();
+        try {
+            echo $this->router->resolve();
+        } catch (\Exception $e) {
+            $this->response->setStatusCode($e->getCode());
+            echo $this->router->renderView('_error', ['exception' => $e]);
+        }
     }
 
     /**
